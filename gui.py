@@ -3,9 +3,11 @@ import re
 from datetime import date
 
 class TicketCountFrame(wx.Frame):
-    def __init__(self):
-        wx.Frame.__init__(self, None, title="ZDTool", pos=(100,150), size=(700,500))
 
+    def __init__(self):
+        wx.Frame.__init__(self, None, title="ZDTool", pos=(100,150), size=(800,500), style = wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
+
+        
         #setting up panel and static text
         self.panel = wx.Panel(self)
         self.text = wx.StaticText(self.panel, label = "Enter Tickets:", pos = (10,50))
@@ -13,15 +15,14 @@ class TicketCountFrame(wx.Frame):
         font.PointSize = 12
         font = font.Bold()
         self.text.SetFont(font)
-        
-        #self.logo = wx.StaticBitmap(self, -1, wx.Bitmap("C:\ZDTOOL\logo.jpg",wx.BITMAP_TYPE_ANY))
+    
 
         #setting up buttons
         self.button1 = wx.Button(self.panel, label = "Convert", pos = (150,350), size= (70,30))
         self.button2 = wx.Button(self.panel, label = "Clear", pos = (300,350), size=(70,30))
         
         #user text setup
-        self.tickets = wx.TextCtrl(self.panel, pos = (120,50), size=(300,250),
+        self.tickets = wx.TextCtrl(self.panel, pos = (120,50), size=(350,300),
             style = wx.TE_MULTILINE|wx.TE_NO_VSCROLL|wx.BORDER_NONE)
         
         
@@ -41,10 +42,10 @@ class TicketCountFrame(wx.Frame):
     def MenuBar(self):
         fileMenu = wx.Menu()
  
-        exportItem = fileMenu.Append(-1, "&Export\tCtrl-E",
+        exportItem = fileMenu.Append(-1, "&Export\tAlt-E",
                 "Export text file with IDs")
         fileMenu.AppendSeparator()
-        closeItem = fileMenu.Append(wx.ID_EXIT)
+        closeItem = fileMenu.Append(-1, "&Quit\tEsc","Quit the application")
 
         # Now a help menu for the about item
         helpMenu = wx.Menu()
@@ -69,7 +70,7 @@ class TicketCountFrame(wx.Frame):
         self.Close(True)    
 
 
-        #Pulls ticket numbers from URLs, if there is no URL and jsut a number, it should pull that and place it into a string that is a list. 
+        #Pulls ticket numbers from URLs, if there is no URL and just a number, it should pull that and place it into a string that is a list. 
     def Convert(self, event):
         url = self.tickets.GetValue()
         id1 = re.findall("\d+",url)
@@ -95,7 +96,7 @@ class TicketCountFrame(wx.Frame):
             file.write("{} \n".format(self.tickets.GetValue()))
             file.write('\n')
             file.close()
-        else:
+        else: 
             wx.MessageBox("Ticket field is empty. Please paste and convert tickets to export.","ZDTOOL Export",
                             wx.OK|wx.ICON_INFORMATION)
 
